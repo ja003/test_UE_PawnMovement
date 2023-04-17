@@ -36,6 +36,7 @@ void UMyPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 	const AController* Controller = PawnOwner->GetController();
 	if (Controller && Controller->IsLocalController())
 	{
+		//UE_LOG(LogTemp, Log, TEXT("xxx IsFollowingAPath() = %s"), Controller->IsFollowingAPath() ? TEXT("true"):TEXT("false"));
 		// apply input for local players but also for AI that's not following a navigation path at the moment
 		if (Controller->IsLocalPlayerController() == true || Controller->IsFollowingAPath() == false || bUseAccelerationForPaths)
 		{
@@ -50,6 +51,9 @@ void UMyPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 
 		LimitWorldBounds();
 		bPositionCorrected = false;
+
+		if (AdjustRotation(DeltaTime))
+			return;
 
 		// Move actor
 		FVector Delta = Velocity * DeltaTime;
@@ -148,4 +152,28 @@ bool UMyPawnMovementComponent::ResolvePenetrationImpl(const FVector& Adjustment,
 {
 	bPositionCorrected |= Super::ResolvePenetrationImpl(Adjustment, Hit, NewRotationQuat);
 	return bPositionCorrected;
+}
+
+bool UMyPawnMovementComponent::AdjustRotation(float DelaTime)
+{
+	//UE_LOG(LogTemp, Log, TEXT("xxx Velocity = %s"), *Velocity.ToString());
+
+	if (Velocity.IsZero())
+	{
+		return false;
+	}
+
+	FQuat finalRotation = FRotationMatrix::MakeFromXZ(Velocity, FVector::UpVector).ToQuat();	
+	FQuat newRotation = FMath::QInterpConstantTo(GetOwner()->GetActorRotation().Quaternion(), finalRotation, DelaTime, TurnSpeed);
+
+	if (finalRotation.Equals(newRotation, 0.01f))
+	{
+		UE_LOG(LogTemp, Log, TEXT("xxx finalRotation reached"));
+		//MaxSpeed = 100;
+		return false;
+	}
+
+	GetOwner()->SetActorRotation(newRotation);
+	//MaxSpeed = 1;
+	return true;
 }

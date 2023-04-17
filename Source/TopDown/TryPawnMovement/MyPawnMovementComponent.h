@@ -27,6 +27,15 @@ protected:
 public:
 	//End UMovementComponent Interface
 
+protected: // mine
+
+	bool AdjustRotation(float DeltaTime);
+
+	UPROPERTY(EditDefaultsOnly)
+	float TurnSpeed = 1.f;
+
+public:
+
 	/** Maximum velocity magnitude allowed for the controlled Pawn. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=FloatingPawnMovement)
 	float MaxSpeed;
