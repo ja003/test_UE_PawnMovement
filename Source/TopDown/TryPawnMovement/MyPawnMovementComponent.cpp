@@ -52,8 +52,10 @@ void UMyPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 		LimitWorldBounds();
 		bPositionCorrected = false;
 
-		if (AdjustRotation(DeltaTime))
-			return;
+		// if (AdjustRotation(DeltaTime))
+		// 	return;
+
+		AdjustRotation(DeltaTime);
 
 		// Move actor
 		FVector Delta = Velocity * DeltaTime;
@@ -163,6 +165,7 @@ bool UMyPawnMovementComponent::AdjustRotation(float DelaTime)
 		return false;
 	}
 
+	// gradually rotate actor to face its velocity 
 	FQuat finalRotation = FRotationMatrix::MakeFromXZ(Velocity, FVector::UpVector).ToQuat();	
 	FQuat newRotation = FMath::QInterpConstantTo(GetOwner()->GetActorRotation().Quaternion(), finalRotation, DelaTime, TurnSpeed);
 
@@ -174,6 +177,11 @@ bool UMyPawnMovementComponent::AdjustRotation(float DelaTime)
 	}
 
 	GetOwner()->SetActorRotation(newRotation);
-	//MaxSpeed = 1;
+
+	// let actor move only in direction it's facing
+	Velocity = GetOwner()->GetActorForwardVector() * GetMaxSpeed();
+	
+	//MaxSpeed = 1; // we might limit movement speed here as well
+	
 	return true;
 }
