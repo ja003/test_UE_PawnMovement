@@ -55,7 +55,7 @@ void UMyPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 		// if (AdjustRotation(DeltaTime))
 		// 	return;
 
-		AdjustRotation(DeltaTime);
+		//AdjustRotation(DeltaTime);
 
 		// Move actor
 		FVector Delta = Velocity * DeltaTime;
@@ -171,7 +171,7 @@ bool UMyPawnMovementComponent::AdjustRotation(float DelaTime)
 
 	if (finalRotation.Equals(newRotation, 0.01f))
 	{
-		UE_LOG(LogTemp, Log, TEXT("xxx finalRotation reached"));
+		//UE_LOG(LogTemp, Log, TEXT("xxx finalRotation reached"));
 		//MaxSpeed = 100;
 		return false;
 	}
