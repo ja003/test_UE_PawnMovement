@@ -13,5 +13,12 @@ class TOPDOWN_API UMyPathFollowingComponent : public UPathFollowingComponent
 {
 	GENERATED_BODY()
 
+	virtual FAIRequestID RequestMove(const FAIMoveRequest& RequestData, FNavPathSharedPtr InPath) override;
+	
+	virtual void SetMoveSegment(int32 SegmentStartIndex) override;
+
+	virtual bool HasReachedCurrentTarget(const FVector& CurrentLocation) const override;
+
+
 	
 };

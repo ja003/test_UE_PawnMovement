@@ -15,6 +15,11 @@ class TOPDOWN_API AMyPawn : public APawn
 public:
 	AMyPawn();
 
+public:
+
+	UPROPERTY(EditAnywhere)
+	FVector DebugPoint;
+
 protected:
 	
 	UPROPERTY(EditDefaultsOnly)
