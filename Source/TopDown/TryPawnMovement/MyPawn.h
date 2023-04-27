@@ -17,7 +17,7 @@ public:
 
 public:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, meta=(MakeEditWidget))
 	FVector DebugPoint;
 
 protected:

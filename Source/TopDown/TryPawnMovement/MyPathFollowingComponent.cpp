@@ -8,7 +8,13 @@
 
 FAIRequestID UMyPathFollowingComponent::RequestMove(const FAIMoveRequest& RequestData, FNavPathSharedPtr InPath)
 {
-	FVector DebugPoint = Cast<AMyPawn>(Cast<AAIController>(GetOwner())->GetPawn())->DebugPoint;
+	AMyPawn* myPawn = Cast<AMyPawn>(Cast<AAIController>(GetOwner())->GetPawn());
+	FVector DebugPoint = myPawn->DebugPoint + myPawn->GetActorLocation();
+
+	for (int i = 0; i < InPath->GetPathPoints().Num(); ++i)
+	{
+		InPath->GetPathPoints()[i].Location += FVector(1,-1,0) * 100;
+	}
 	
 	InPath->GetPathPoints().Add(FNavPathPoint(DebugPoint));
 	
